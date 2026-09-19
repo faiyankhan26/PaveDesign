@@ -249,14 +249,11 @@ class PavementInput(BaseModel):
 
 @app.get("/")
 def home(request: Request):
-
     return templates.TemplateResponse(
-        "index.html",
-        {
-            "request": request,
-            "calculated": False
-        }
-    )
+    request=request,
+    name="index.html",
+    context={"calculated": False}
+)
 
 
 # ==================================================
@@ -292,90 +289,79 @@ def design(
     # --------------------------------------------------
     # Input Validation
     # --------------------------------------------------
+    # --------------------------------------------------
+    # Input Validation
+    # --------------------------------------------------
 
     if commercial_vehicles <= 0:
-
         return templates.TemplateResponse(
-            "index.html",
-            {
-                "request": request,
+            request=request,
+            name="index.html",
+            context={
                 "error": "Commercial vehicles must be greater than 0.",
                 "calculated": False
             }
         )
 
-
     if growth < 0:
-
         return templates.TemplateResponse(
-            "index.html",
-            {
-                "request": request,
+            request=request,
+            name="index.html",
+            context={
                 "error": "Traffic growth rate cannot be negative.",
                 "calculated": False
             }
         )
 
-
     if design_life <= 0:
-
         return templates.TemplateResponse(
-            "index.html",
-            {
-                "request": request,
+            request=request,
+            name="index.html",
+            context={
                 "error": "Design life must be greater than 0.",
                 "calculated": False
             }
         )
 
-
     if cbr <= 0:
-
         return templates.TemplateResponse(
-            "index.html",
-            {
-                "request": request,
+            request=request,
+            name="index.html",
+            context={
                 "error": "CBR must be greater than 0.",
                 "calculated": False
             }
         )
 
-
     if k_value <= 0:
-
         return templates.TemplateResponse(
-            "index.html",
-            {
-                "request": request,
+            request=request,
+            name="index.html",
+            context={
                 "error": "K-value must be greater than 0.",
                 "calculated": False
             }
         )
 
-
     if flexural <= 0:
-
         return templates.TemplateResponse(
-            "index.html",
-            {
-                "request": request,
+            request=request,
+            name="index.html",
+            context={
                 "error": "Flexural strength must be greater than 0.",
                 "calculated": False
             }
         )
 
-
     if ec <= 0:
-
         return templates.TemplateResponse(
-            "index.html",
-            {
-                "request": request,
+            request=request,
+            name="index.html",
+            context={
                 "error": "Modulus of elasticity must be greater than 0.",
                 "calculated": False
             }
         )
-
 
     # --------------------------------------------------
     # Create Pydantic Object
@@ -488,74 +474,29 @@ def design(
     # --------------------------------------------------
     # Send Results to Jinja2
     # --------------------------------------------------
-
     return templates.TemplateResponse(
-
-        "index.html",
-
-        {
-
-            "request": request,
-
+        request=request,
+        name="index.html",
+        context={
             "calculated": True,
-
-            "project_name":
-                pavement.project_name,
-
-            "pavement_type":
-                pavement.pavement_type,
-
-            "commercial_vehicles":
-                pavement.commercial_vehicles,
-
-            "growth":
-                pavement.growth,
-
-            "design_life":
-                pavement.design_life,
-
-            "cbr":
-                pavement.cbr,
-
-            "k_value":
-                pavement.k_value,
-
-            "grade":
-                pavement.grade,
-
-            "flexural":
-                pavement.flexural,
-
-            "ec":
-                pavement.ec,
-
-            # Rigid
-            "slab_thickness":
-                slab_thickness,
-
-            "base_thickness":
-                base_thickness,
-
-            "cumulative_traffic":
-                cumulative_traffic,
-
-            # Flexible
-            "design_traffic_msa":
-                design_traffic_msa,
-
-            "total_thickness":
-                total_thickness,
-
-            "bituminous_thickness":
-                bituminous_thickness,
-
-            "granular_base_thickness":
-                granular_base_thickness,
-
-            "granular_subbase_thickness":
-                granular_subbase_thickness,
-
-            "result_cbr":
-                pavement.cbr
+            "project_name": pavement.project_name,
+            "pavement_type": pavement.pavement_type,
+            "commercial_vehicles": pavement.commercial_vehicles,
+            "growth": pavement.growth,
+            "design_life": pavement.design_life,
+            "cbr": pavement.cbr,
+            "k_value": pavement.k_value,
+            "grade": pavement.grade,
+            "flexural": pavement.flexural,
+            "ec": pavement.ec,
+            "slab_thickness": slab_thickness,
+            "base_thickness": base_thickness,
+            "cumulative_traffic": cumulative_traffic,
+            "design_traffic_msa": design_traffic_msa,
+            "total_thickness": total_thickness,
+            "bituminous_thickness": bituminous_thickness,
+            "granular_base_thickness": granular_base_thickness,
+            "granular_subbase_thickness": granular_subbase_thickness,
+            "result_cbr": pavement.cbr
         }
     )
