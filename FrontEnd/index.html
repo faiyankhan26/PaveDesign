@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        PaveDesign | Pavement Design Application
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/static/styles.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         Navigation
+    ========================== -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            PaveDesign
+        </div>
+
+        <div class="nav-text">
+            Pavement Design Application
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         Main Content
+    ========================== -->
+
+    <main class="container">
+
+
+        <!-- Hero -->
+
+        <section class="hero">
+
+            <h1>
+                Design Your Pavement
+            </h1>
+
+            <p>
+                Enter road, traffic, subgrade and concrete
+                properties to generate a pavement design.
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================
+             Design Form
+        ========================== -->
+
+        <form
+            class="design-form"
+            method="post"
+            action="/design"
+        >
+
+
+            <!-- Error Message -->
+
+            {% if error %}
+
+            <div class="error-message">
+
+                {{ error }}
+
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- Project Information -->
+
+            <section class="card">
+
+                <h2>
+                    Project Information
+                </h2>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="project_name">
+                            Project Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="project_name"
+                            name="project_name"
+                            placeholder="e.g. Main Colony Road"
+                        >
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="pavement_type">
+                            Pavement Type
+                        </label>
+
+                        <select
+                            id="pavement_type"
+                            name="pavement_type"
+                        >
+
+                            <option value="rigid">
+                                Rigid Pavement
+                            </option>
+
+                            <option value="flexible">
+                                Flexible Pavement
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Traffic Information -->
+
+            <section class="card">
+
+                <h2>
+                    Traffic Information
+                </h2>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="vehicles">
+                            Commercial Vehicles per Day
+                        </label>
+
+                        <div class="input-unit">
+
+                            <input
+                                type="number"
+                                id="vehicles"
+                                name="commercial_vehicles"
+                                placeholder="500"
+                                min="1"
+                                required
+                            >
+
+                            <span>
+                                veh/day
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="growth">
+                            Traffic Growth Rate
+                        </label>
+
+                        <div class="input-unit">
+
+                            <input
+                                type="number"
+                                id="growth"
+                                name="growth"
+                                placeholder="5"
+                                min="0"
+                                step="0.1"
+                                required
+                            >
+
+                            <span>
+                                %
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="design-life">
+                            Design Life
+                        </label>
+
+                        <div class="input-unit">
+
+                            <input
+                                type="number"
+                                id="design-life"
+                                name="design_life"
+                                placeholder="20"
+                                min="1"
+                                required
+                            >
+
+                            <span>
+                                years
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Subgrade Information -->
+
+            <section class="card">
+
+                <h2>
+                    Subgrade Information
+                </h2>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="cbr">
+                            Subgrade CBR
+                        </label>
+
+                        <div class="input-unit">
+
+                            <input
+                                type="number"
+                                id="cbr"
+                                name="cbr"
+                                placeholder="6"
+                                min="0.1"
+                                step="0.1"
+                                required
+                            >
+
+                            <span>
+                                %
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="k-value">
+                            Modulus of Subgrade Reaction
+                        </label>
+
+                        <div class="input-unit">
+
+                            <input
+                                type="number"
+                                id="k-value"
+                                name="k_value"
+                                placeholder="50"
+                                min="0.1"
+                                step="0.1"
+                                required
+                            >
+
+                            <span>
+                                MPa/m
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Concrete Information -->
+
+            <section class="card">
+
+                <h2>
+                    Concrete Properties
+                </h2>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="grade">
+                            Concrete Grade
+                        </label>
+
+                        <select
+                            id="grade"
+                            name="grade"
+                        >
+
+                            <option value="M30">
+                                M30
+                            </option>
+
+                            <option value="M35">
+                                M35
+                            </option>
+
+                            <option value="M40">
+                                M40
+                            </option>
+
+                            <option value="M45">
+                                M45
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="flexural">
+                            Flexural Strength
+                        </label>
+
+                        <div class="input-unit">
+
+                            <input
+                                type="number"
+                                id="flexural"
+                                name="flexural"
+                                placeholder="4.5"
+                                min="0.1"
+                                step="0.1"
+                                required
+                            >
+
+                            <span>
+                                MPa
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="ec">
+                            Modulus of Elasticity
+                        </label>
+
+                        <div class="input-unit">
+
+                            <input
+                                type="number"
+                                id="ec"
+                                name="ec"
+                                placeholder="30000"
+                                min="1"
+                                required
+                            >
+
+                            <span>
+                                MPa
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Calculate Button -->
+
+            <div class="button-container">
+
+                <button
+                    type="submit"
+                    class="calculate-btn"
+                >
+
+                    Calculate Pavement Design
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+
+
+        <!-- =========================
+             Results
+        ========================== -->
+
+        {% if calculated %}
+
+        <section class="result-section">
+
+
+            <div class="result-header">
+
+                <div>
+
+                    <h2>
+                        Design Result
+                    </h2>
+
+                    <p>
+                        Preliminary pavement design output
+                    </p>
+
+                </div>
+
+
+                <span class="status">
+                    Design Completed
+                </span>
+
+            </div>
+
+
+
+            <!-- =========================
+                 Rigid Pavement Result
+            ========================== -->
+
+            {% if pavement_type == "rigid" %}
+
+            <div class="result-grid">
+
+
+                <div class="result-card">
+
+                    <span class="result-label">
+                        Slab Thickness
+                    </span>
+
+                    <strong>
+                        {{ slab_thickness }}
+                    </strong>
+
+                    <small>
+                        mm
+                    </small>
+
+                </div>
+
+
+
+                <div class="result-card">
+
+                    <span class="result-label">
+                        Base Thickness
+                    </span>
+
+                    <strong>
+                        {{ base_thickness }}
+                    </strong>
+
+                    <small>
+                        mm
+                    </small>
+
+                </div>
+
+
+
+                <div class="result-card">
+
+                    <span class="result-label">
+                        Cumulative Traffic
+                    </span>
+
+                    <strong>
+                        {{ cumulative_traffic }}
+                    </strong>
+
+                    <small>
+                        vehicles
+                    </small>
+
+                </div>
+
+
+
+                <div class="result-card">
+
+                    <span class="result-label">
+                        Subgrade CBR
+                    </span>
+
+                    <strong>
+                        {{ result_cbr }}
+                    </strong>
+
+                    <small>
+                        %
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="design-summary">
+
+                <h3>
+                    Rigid Pavement Summary
+                </h3>
+
+                <p>
+
+                    The preliminary rigid pavement calculation
+                    gives a slab thickness of
+
+                    <strong>
+                        {{ slab_thickness }} mm
+                    </strong>
+
+                    and a base thickness of
+
+                    <strong>
+                        {{ base_thickness }} mm
+                    </strong>.
+
+                    The calculated cumulative commercial vehicle
+                    traffic is
+
+                    <strong>
+                        {{ cumulative_traffic }}
+                    </strong> vehicles.
+
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 Flexible Pavement Result
+            ========================== -->
+
+            {% else %}
+
+            <div class="result-grid">
+
+
+                <div class="result-card">
+
+                    <span class="result-label">
+                        Design Traffic
+                    </span>
+
+                    <strong>
+                        {{ design_traffic_msa }}
+                    </strong>
+
+                    <small>
+                        MSA
+                    </small>
+
+                </div>
+
+
+
+                <div class="result-card">
+
+                    <span class="result-label">
+                        Total Thickness
+                    </span>
+
+                    <strong>
+                        {{ total_thickness }}
+                    </strong>
+
+                    <small>
+                        mm
+                    </small>
+
+                </div>
+
+
+
+                <div class="result-card">
+
+                    <span class="result-label">
+                        Bituminous Layer
+                    </span>
+
+                    <strong>
+                        {{ bituminous_thickness }}
+                    </strong>
+
+                    <small>
+                        mm
+                    </small>
+
+                </div>
+
+
+
+                <div class="result-card">
+
+                    <span class="result-label">
+                        Granular Base
+                    </span>
+
+                    <strong>
+                        {{ granular_base_thickness }}
+                    </strong>
+
+                    <small>
+                        mm
+                    </small>
+
+                </div>
+
+
+
+                <div class="result-card">
+
+                    <span class="result-label">
+                        Granular Sub-base
+                    </span>
+
+                    <strong>
+                        {{ granular_subbase_thickness }}
+                    </strong>
+
+                    <small>
+                        mm
+                    </small>
+
+                </div>
+
+
+
+                <div class="result-card">
+
+                    <span class="result-label">
+                        Subgrade CBR
+                    </span>
+
+                    <strong>
+                        {{ result_cbr }}
+                    </strong>
+
+                    <small>
+                        %
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="design-summary">
+
+                <h3>
+                    Flexible Pavement Summary
+                </h3>
+
+                <p>
+
+                    The preliminary flexible pavement calculation
+                    gives a total pavement thickness of
+
+                    <strong>
+                        {{ total_thickness }} mm
+                    </strong>
+
+                    for a design traffic of
+
+                    <strong>
+                        {{ design_traffic_msa }} MSA
+                    </strong>.
+
+                    The preliminary layer distribution consists of
+
+                    <strong>
+                        {{ bituminous_thickness }} mm
+                    </strong>
+
+                    bituminous layer,
+
+                    <strong>
+                        {{ granular_base_thickness }} mm
+                    </strong>
+
+                    granular base and
+
+                    <strong>
+                        {{ granular_subbase_thickness }} mm
+                    </strong>
+
+                    granular sub-base.
+
+                </p>
+
+            </div>
+
+            {% endif %}
+
+
+        </section>
+
+        {% endif %}
+
+
+    </main>
+
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <p>
+            PaveDesign © 2026 | Pavement Design Application
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
